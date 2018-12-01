@@ -2,9 +2,9 @@ package Main.documentationDef;
 
 public enum keywords
 {
-    NOPE;
-    public keywords stringToEnum(String s)
+    NONE;
+    public static keywords stringToEnum(String s)
     {
-        return NOPE;
+        return NONE;
     }
 }

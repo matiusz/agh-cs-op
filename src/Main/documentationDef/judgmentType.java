@@ -1,13 +1,13 @@
 package Main.documentationDef;
 
-public enum judgementType
+public enum judgmentType
 {
     DECISION,
     RESOLUTION,
     SENTENCE,
     REGULATION,
     REASONS;
-    public static judgementType stringToEnum(String s)
+    public static judgmentType stringToEnum(String s)
     {
         switch (s)
         {

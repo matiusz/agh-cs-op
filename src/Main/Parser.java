@@ -1,6 +1,6 @@
 package Main;
-import Main.documentationDef.Judgement;
-import Main.documentationDef.judgementType;
+import Main.documentationDef.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -49,11 +49,37 @@ public class Parser
         return files;
     }
 
-    public void parseFromString(String arg)
+    public Judgment parseFromString(String arg)
     {
         JSONObject json = new JSONObject(arg);
-        Judgement parsed = new Judgement();
+        Judgment parsed = new Judgment();
         parsed.id = (int) json.get("id");
-        parsed.judgementType = judgementType.stringToEnum(json.getString("judgementType"));
+        parsed.judgmentType = judgmentType.stringToEnum(json.optString("judgmentType"));
+        parsed.decision =json.optString("decision");
+        parsed.summary =json.optString("summary");
+        parsed.textContent =json.optString("textContent");
+        parsed.legalBases =json.optString("legalBases");
+        parsed.keyword = keywords.stringToEnum(json.optString("keyword"));
+        parsed.receiptDate = json.optString("receiptDate");
+        parsed.meansOfAppeal = json.optString("meansOfAppeal");
+        {
+            JSONArray reporters =  json.getJSONArray("courtReporters");
+            parsed.courtReporters = new String[reporters.length()];
+            for (int i = 0; i<reporters.length(); i++)
+            {
+                parsed.courtReporters[i]=reporters.getString(i);
+            }
+        }
+        {
+            JSONArray lowerCourt =  json.getJSONArray("lowerCourtJudgments");
+            parsed.lowerCourtJudgments = new String[lowerCourt.length()];
+            for (int i = 0; i<lowerCourt.length(); i++)
+            {
+                parsed.lowerCourtJudgments[i]=lowerCourt.getString(i);
+            }
+        }
+        parsed.division = new Division(json.getJSONObject("division").getInt("id"));
+
+        return parsed;
     }
 }

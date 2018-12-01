@@ -1,8 +1,8 @@
 package Main.documentationDef;
 
-public enum judgementForm {
+public enum judgmentForm {
     NOPE;
-    public judgementForm stringToEnum(String s)
+    public judgmentForm stringToEnum(String s)
     {
         return NOPE;
     }
