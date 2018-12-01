@@ -21,8 +21,8 @@
         public String lowerCourtJudgments[];
         public personnelType personnelType;
         public judgmentForm judgmentForm;
-        public Division division;
-        public Chamber chambers[];
-        public DissentingOpinions dissentingOpinions;
+        //public Division division;
+        //public Chamber chambers[];
+        public DissentingOpinions dissentingOpinions[];
     }
 

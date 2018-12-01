@@ -3,5 +3,9 @@ package Main.documentationDef;
 public class DissentingOpinions
 {
     String textContent;
-    String authors[];
+    public String authors[];
+    public DissentingOpinions(String content)
+    {
+        textContent = content;
+    }
 }

@@ -2,6 +2,8 @@ package Main.documentationDef;
 
 import java.util.Date;
 
+import static Main.documentationDef.Source.code.*;
+
 public class Source
 {
     public enum code
@@ -11,11 +13,27 @@ public class Source
         CONSTITUTIONAL_TRIBUNAL,
         NATIONAL_APPEAL_CHAMBER;
     }
-    code code;
-    String judgementUrl;
-    String judgementId;
-    String publisher;
-    String reviser;
-    Date publicationDate;
+    public static code stringToEnum(String s)
+    {
+        switch (s)
+        {
+            case "COMMON_COURT":
+                return COMMON_COURT;
+            case "SUPREME_COURT":
+                return SUPREME_COURT;
+            case "CONSTITUTIONAL_TRIBUNAL":
+                return CONSTITUTIONAL_TRIBUNAL;
+            case "NATIONAL_APPEAL_CHAMBER":
+                return NATIONAL_APPEAL_CHAMBER;
+                default:
+                    return COMMON_COURT;
+        }
+    }
+    public code code;
+    public String judgmentUrl;
+    public String judgmentId;
+    public String publisher;
+    public String reviser;
+    public String publicationDate;
 
 }

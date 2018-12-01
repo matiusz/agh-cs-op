@@ -10,7 +10,7 @@ public enum personnelType {
     ALL_CHAMBER,
     JOINED_CHAMBERS;
 
-    public personnelType stringToEnum(String s) {
+    public static personnelType stringToEnum(String s) {
         switch (s) {
             case "NOT_SUPREME_COURT":
                 return NOT_SUPREME_COURT;
