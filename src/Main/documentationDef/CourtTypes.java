@@ -1,6 +1,6 @@
 package Main.documentationDef;
 
-public enum courtTypes
+public enum CourtTypes
 {
     COMMON,
     SUPREME,
@@ -8,7 +8,7 @@ public enum courtTypes
     CONSTITUTIONAL_TRIBUNAL,
     ADMINISTRATIVE;
 
-    public static courtTypes stringToEnum(String s)
+    public static CourtTypes stringToEnum(String s)
     {
         switch (s) {
             case "COMMON":

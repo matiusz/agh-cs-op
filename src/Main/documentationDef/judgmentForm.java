@@ -1,10 +1,10 @@
 package Main.documentationDef;
 
 public enum judgmentForm {
-    NOPE;
+    NONE;
     public static judgmentForm stringToEnum(String s)
     {
-        return NOPE;
+        return NONE;
     }
 }
 

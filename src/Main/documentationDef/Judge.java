@@ -1,14 +1,70 @@
 package Main.documentationDef;
 
+import java.util.Arrays;
+
+import static Main.documentationDef.Judge.SpecialRoles.*;
+
 public class Judge
 {
-    public enum specialRoles
+    public enum SpecialRoles
     {
         PRESIDING_JUDGE,
-        REPORTING_JUSGE,
-        REASONS_FOR_JUSGEMENT_AUTHOR;
+        REPORTING_JUDGE,
+        REASONS_FOR_JUDGEMENT_AUTHOR,
+        NULL;
+
+        @Override
+        public String toString() {
+            switch (this)
+            {
+                case PRESIDING_JUDGE:
+                    return "PRESIDING_JUDGE";
+                case REPORTING_JUDGE:
+                    return "REPORTING_JUDGE";
+                case REASONS_FOR_JUDGEMENT_AUTHOR:
+                    return "REASONS_FOR_JUDGEMENT_AUTHOR";
+                default:
+                    return "";
+            }
+        }
     }
-    int name;
+
+
+    String name;
     String function;
-    specialRoles specialRoles;
+
+    public SpecialRoles[] getSpecialRoles() {
+        return specialRoles;
+    }
+
+    SpecialRoles specialRoles[];
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFunction() {
+        return function;
+    }
+
+    public static SpecialRoles stringToEnum(String s)
+    {
+        switch (s)
+        {
+            case "PRESIDING_JUDGE":
+                return PRESIDING_JUDGE;
+            case "REPORTING_JUDGE":
+                return REPORTING_JUDGE;
+            case "REASONS_FOR_JUDGEMENT_AUTHOR":
+                return REASONS_FOR_JUDGEMENT_AUTHOR;
+                default:
+                    return NULL;
+        }
+    }
+    public String toString()
+    {
+        return (name+" - "+ Arrays.toString(specialRoles));
+    }
+
+
 }

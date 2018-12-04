@@ -29,11 +29,10 @@ public class Source
                     return COMMON_COURT;
         }
     }
-    public code code;
-    public String judgmentUrl;
-    public String judgmentId;
-    public String publisher;
-    public String reviser;
-    public String publicationDate;
-
+    code code;
+    String judgmentUrl;
+    String judgmentId;
+    String publisher;
+    String reviser;
+    String publicationDate;
 }
