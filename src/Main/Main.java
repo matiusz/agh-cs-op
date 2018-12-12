@@ -1,50 +1,61 @@
 package Main;
-
+import Main.documentationDef.Judge;
 import Main.documentationDef.Judgment;
+import Main.functions.Commands;
+import Main.functions.FileMethods;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import static Main.documentationDef.Judgment.judgmentArray;
 
-public class Main
-{
-    public static void main(String args[]) throws IOException {
-        String path = args[0];
-        FileMethods fileMethods = new FileMethods();
-        ArrayList<Judgment> judgments = new ArrayList<Judgment>();
-        HashMap<Integer, Judgment> judgmentHashMap = new HashMap<Integer, Judgment>();
-        //System.out.println("Please enter target folder path");
+public class Main {
+    public static void main(String args[]) throws IOException
+    {
         Scanner sc = new Scanner(System.in);
-        //String path = sc.nextLine();
-
-        for (String string : fileMethods.fileWalk(path))
+        // path = sc.nextLine();
+        FileMethods fileMethods = new FileMethods();
+        HashMap<Integer, Judgment> judgmentHashMap = new HashMap<>();
+        HashMap<String, Judge> judgeHashMap = new HashMap<>();
+        //Preload
+        String path = args[0];
+        //
+        try
         {
-            //System.out.println(fileMethods.readFile(path+"\\"+string));
-            Judgment judgment = new Judgment(path+"\\"+string);
-            judgmentHashMap.put(judgment.getId(), judgment);
-        }
-        System.out.println("\nList of commands:\njudgmentById (byID) - shows judgment with given id\nshowJudgmentContent (content) - shows text content of a judgement with given id\nq - ends the program");
-        //String command = "";
-        commands:
-        while (true)
-        {
-            System.out.println("\nEnter command:");
-            String command = sc.nextLine();
-            switch (command) {
-                case "judgmentById":
-                case "byID":
-                    Commands.judgmentById(judgmentHashMap);
-                    continue commands;
-                case "showJudgmentContent":
-                case "content":
-                    Commands.showJudgementContent(judgmentHashMap);
-                    continue commands;
-                case "q":
-                    break commands;
+            for (String string : fileMethods.fileWalk(path)) {
+                System.out.println(path + "\\" + string);
+                for (Judgment judgment : judgmentArray(path + "\\" + string)) {
+                    judgmentHashMap.put(judgment.getId(), judgment);
+                }
             }
         }
-        System.out.println("Thank you for using this program");
-        //String line = reader.readLine();
+        catch (NullPointerException ex)
+        {
+            System.out.println("Invalid starting directory, shutting down");
+            System.exit(1);
+        }
+        System.out.println(judgmentHashMap.size() + " judgments(s) loaded successfully");
+        System.out.print("\n");
+        System.out.println(Commands.helptext);
+        Commands console = new Commands();
+        while (true)
+        {
+            System.out.print("Enter next command:\n>");
+            String input = sc.nextLine();
+            System.out.print(console.command(input, judgmentHashMap,judgeHashMap));
+        }
     }
 }
+
+
+/**
+Commands progress:
+ help - needs update
+ content - DONE
+ judge - needs update
+ judges - DONE
+ months - DONE
+ courts - DONE
+ regulations - TODO
+ jury - DONE
+ **/

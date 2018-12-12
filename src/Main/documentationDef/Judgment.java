@@ -1,6 +1,6 @@
     package Main.documentationDef;
 
-    import java.util.Arrays;
+    import Main.functions.JudgmentBuilderJSON;
 
     public class Judgment
     {
@@ -13,7 +13,7 @@
 
         Judge judges[];
         CourtTypes courtType;
-        CourtCase courtCases[];
+        public CourtCase courtCases[];
         judgmentType judgmentType;
         Source source;
         String courtReporters[];
@@ -33,9 +33,15 @@
         DissentingOpinions dissentingOpinions[];
         String judgmentDate;
 
-        public Judgment(String filepath)
+        /*
+        public static Judgment JudgmentFromString(String filepath)
         {
-            JudgmentBuilder builderObject = JudgmentBuilder.parseFromString(filepath);
+            JudgmentBuilderJSON builderObject = JudgmentBuilderJSON.parseFromString(filepath);
+            return new Judgment(builderObject);
+        }
+        */
+        public Judgment(JudgmentBuilderJSON builderObject)
+        {
             id=builderObject.id;
             courtType=builderObject.courtType;
             judgmentType=builderObject.judgmentType;
@@ -53,18 +59,41 @@
             dissentingOpinions=builderObject.dissentingOpinions;
             judges=builderObject.judges;
             judgmentDate=builderObject.judgmentDate;
-
+            courtCases=builderObject.courtCases;
         }
 
-        @Override
-        public String toString()
+        public static Judgment[] judgmentArray(String filepath)
         {
-            return(id+"\n"+judgmentDate+'\n'+courtType+'\n'+ Arrays.toString(judges));
+            JudgmentBuilderJSON builderObjects[] = JudgmentBuilderJSON.parseFromArray(filepath);
+            Judgment judgments[] = new Judgment[builderObjects.length];
+            for (int i=0; i<builderObjects.length; i++)
+            {
+                judgments[i]= new Judgment(builderObjects[i]);
+            }
+            return judgments;
+        }
+
+        public CourtTypes getCourtType()
+        {
+            return courtType;
+        }
+
+        public Judge[] getJudges()
+        {
+            return judges;
+        }
+        public String getJudgmentDate()
+        {
+            return judgmentDate;
         }
 
         public String showContent()
         {
             return(textContent);
+        }
+        public String toString()
+        {
+            return (courtCases[0].caseNumber+", "+judgmentDate+", "+CourtTypes.IntToString(courtType.enumToInt())+", "+ Judge.arrayToString(judges));
         }
     }
 

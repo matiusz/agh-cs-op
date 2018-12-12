@@ -28,16 +28,37 @@ public class Judge
             }
         }
     }
-
-
     String name;
     String function;
+    SpecialRoles specialRoles[];
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public void setSpecialRoles(SpecialRoles[] specialRoles)
+    {
+        this.specialRoles = specialRoles;
+    }
+
+    int amount = 0;
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
     public SpecialRoles[] getSpecialRoles() {
         return specialRoles;
     }
 
-    SpecialRoles specialRoles[];
 
     public String getName() {
         return name;
@@ -65,6 +86,14 @@ public class Judge
     {
         return (name+" - "+ Arrays.toString(specialRoles));
     }
-
+    public static String arrayToString(Judge[] judges)
+    {
+        String result = "";
+        for (Judge judge: judges)
+        {
+            result+=judge+", ";
+        }
+        return result;
+    }
 
 }

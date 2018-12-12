@@ -18,6 +18,11 @@ public class ReferencedCourtCase
 
 
     String caseNumber;
+
+    public void setJudgmentIds(int[] judgmentIds) {
+        this.judgmentIds = judgmentIds;
+    }
+
     int[] judgmentIds;
     boolean generated;
     public ReferencedCourtCase(String s, boolean g)
