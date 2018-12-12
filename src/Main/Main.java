@@ -36,11 +36,11 @@ public class Main {
         }
         System.out.println(judgmentHashMap.size() + " judgments(s) loaded successfully");
         System.out.print("\n");
-        System.out.println(Commands.helptext);
+        System.out.print(Commands.helptext);
         Commands console = new Commands();
         while (true)
         {
-            System.out.print("Enter next command:\n>");
+            System.out.print("\n>");
             String input = sc.nextLine();
             System.out.print(console.command(input, judgmentHashMap,judgeHashMap));
         }
@@ -52,6 +52,7 @@ public class Main {
 Commands progress:
  help - needs update
  content - DONE
+ rubrum - DONE
  judge - needs update
  judges - DONE
  months - DONE

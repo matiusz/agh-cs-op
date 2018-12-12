@@ -27,6 +27,22 @@ public class Commands
                     "\nlog - show history of entered commands" +
                     "\nhelp (h) - show the list of available commands" +
                     "\nquit (q) - ends the program\n";
+    String commandlist[] = new String[13];
+    {
+        commandlist[0]="load";
+        commandlist[1]="judge";
+        commandlist[2]="judges";
+        commandlist[3]="rubrum";
+        commandlist[4]="content";
+        commandlist[5]="months";
+        commandlist[6]="courts";
+        commandlist[7]="jury";
+        commandlist[8]="log";
+        commandlist[9]="help";
+        commandlist[10]="quit";
+        commandlist[11]="h";
+        commandlist[12]="q";
+    }
     public String loadNewData(HashMap<Integer, Judgment> judgmentHashMap, String[] args) //load
     {
         String output = "";
@@ -247,8 +263,7 @@ public class Commands
         String input[] = s.split(" ", -1);
         String command = input[0];
         String args[] = Arrays.copyOfRange(input, 1, input.length);
-        switch (command)
-        {
+        switch (command) {
             case "loadNewData":
             case "load":
                 return loadNewData(judgmentHashMap, args);
@@ -276,8 +291,9 @@ public class Commands
                 System.out.println("Thank you for using this program");
                 System.exit(0);
             default:
-                return("Invalid command, please try again\nPress h to show the list of available commands\n");
-            }
+                {
+                    return ("Invalid command, please try again\nSuggested commands: " + Levenshtein.suggest(command, commandlist) + '\n');
+                }
+        }
     }
 }
-
