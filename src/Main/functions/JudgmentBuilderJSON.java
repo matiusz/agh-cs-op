@@ -17,16 +17,11 @@ public class JudgmentBuilderJSON
     public String summary;
     public String textContent;
     public String legalBases;
-    //public keywords keyword;
     public ReferencedCourtCase referencedCourtCases[];
     public String receiptDate;
     public String meansOfAppeal;
     public String lowerCourtJudgments[];
     public personnelType personnelType;
-    //public Main.documentationDef.Unused.judgmentForm judgmentForm;
-    //public Division division;
-    //public Chamber chambers[];
-    //public DissentingOpinions dissentingOpinions[];
     public String judgmentDate;
     public ReferencedRegulations referencedRegulations[];
 
@@ -39,10 +34,8 @@ public class JudgmentBuilderJSON
         summary =json.optString("summary");
         textContent =json.optString("textContent");
         legalBases =json.optString("legalBases");
-        //keyword = keywords.stringToEnum(json.optString("keyword"));
         receiptDate = json.optString("receiptDate");
         meansOfAppeal = json.optString("meansOfAppeal");
-        //judgmentForm = judgmentForm.stringToEnum(json.optString("judgmentForm"));
         personnelType = personnelType.stringToEnum(json.optString("personnelType"));
         courtType = CourtTypes.stringToEnum(json.optString("courtType"));
         judgmentDate = json.optString("judgmentDate");
@@ -109,23 +102,6 @@ public class JudgmentBuilderJSON
             judges[i]=judge;
         }
     }
-/*
-    private void parseDissentingOpinions(JSONObject json)
-    {
-        JSONArray diss = json.getJSONArray("dissentingOpinions");
-        dissentingOpinions = new DissentingOpinions[diss.length()];
-        for (int i = 0; i < diss.length(); i++) {
-            JSONObject dissobj = diss.getJSONObject(i);
-            DissentingOpinions parsedDiss = new DissentingOpinions(dissobj.optString("textContent"));
-            JSONArray authors = json.getJSONArray("authors");
-            String auth[] = new String[authors.length()];
-            for (int j = 0; j < authors.length(); j++) {
-                auth[j] = authors.getString(j);
-            }
-            dissentingOpinions[i] = parsedDiss;
-        }
-    }
-*/
     private void parseReferencedCourtCases(JSONObject json)
     {
         JSONArray refs = json.getJSONArray("referencedCourtCases");
@@ -159,21 +135,10 @@ public class JudgmentBuilderJSON
         parseLowerCourtJudgment(json);
         parseSource(json);
         parseCourtCases(json);
-        //parseDissentingOpinions(json);
         parseReferencedCourtCases(json);
         parseReferencedRegulations(json);
         parseJudges(json);
     }
-/*
-    public static JudgmentBuilderJSON parseFromString(String arg)
-    {
-        FileMethods fileMethods= new FileMethods();
-        JSONObject json = new JSONObject(fileMethods.readFile(arg));
-        JudgmentBuilderJSON parsed = new JudgmentBuilderJSON();
-        parsed.completeParse(json);
-        return parsed;
-    }
-*/
     public static JudgmentBuilderJSON[] parseFromJSONArray(String arg)
     {
         FileMethods fileMethods = new FileMethods();

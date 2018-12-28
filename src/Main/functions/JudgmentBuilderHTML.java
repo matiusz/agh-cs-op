@@ -19,8 +19,6 @@ public class JudgmentBuilderHTML
     public ReferencedCourtCase referencedCourtCases[];
     public String receiptDate;
     public String meansOfAppeal;
-    public String lowerCourtJudgments[];
-    public personnelType personnelType;
     public String judgmentDate;
     public ReferencedRegulations referencedRegulations[];
 
@@ -100,7 +98,6 @@ public class JudgmentBuilderHTML
             String[] refParts = references.split(">", -1);
             this.referencedRegulations = new ReferencedRegulations[1];
             this.referencedRegulations[0] = new ReferencedRegulations(titletext, Integer.parseInt(refParts[1]), Integer.parseInt(refParts[2]), Integer.parseInt(refParts[3]), "" );
-            //System.out.println(references);
         }
         catch (NullPointerException ex)
         {

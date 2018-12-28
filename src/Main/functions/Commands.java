@@ -3,8 +3,6 @@ package Main.functions;
 import Main.documentationDef.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import java.io.PrintWriter;
 import java.util.HashMap;
 
 import static Main.documentationDef.Judgment.findBySignature;
@@ -13,11 +11,9 @@ import static Main.documentationDef.Judgment.judgmentJSONArray;
 public class Commands
 {
     String log = "";
-    StringBuilder fullLog = new StringBuilder("");
     final static public String helptext =
             "List of commands:" +
                     "\r\nload <folder path>; [folder paths] - loads new judgments from a given folder(s)" +
-                   // "\njudgmentById (byID) - shows judgment with given id" +
                     "\r\njudge <judge name> - shows how many judgments given judge has" +
                     "\r\njudges - shows 10 judges with most judgments" +
                     "\r\nrubrum <id>; [ids] - shows a rubrum of a judgment with given Case Number" +
@@ -64,7 +60,6 @@ public class Commands
                     }
                     if (string.contains(".html"))
                     {
-                        //System.out.println(arg + "\\" + string);
                         Document doc = Jsoup.parse(fileMethods.readFile(arg+"\\"+string), "UTF-8");
                         JudgmentBuilderHTML builderObject = new JudgmentBuilderHTML(doc);
                         Judgment judgment = new Judgment(builderObject);
@@ -72,13 +67,6 @@ public class Commands
                         count++;
                     }
                 }
-/*            }
-            catch (NullPointerException ex)
-            {
-                output += "Invalid directory, no files loaded\n";
-                return output;
-            }
-*/
         }
         if (count==0) {output+="No matching files found";}
         else {output+=(count + " judgments(s) loaded successfully" + "\r\n");}

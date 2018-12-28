@@ -2,7 +2,6 @@
 
     import Main.functions.JudgmentBuilderHTML;
     import Main.functions.JudgmentBuilderJSON;
-    import org.jsoup.nodes.Document;
 
     import java.util.HashMap;
 
@@ -32,25 +31,11 @@
         }
 
         ReferencedRegulations referencedRegulations[];
-        //keywords keyword;
         ReferencedCourtCase referencedCourtCases[];
         String receiptDate;
         String meansOfAppeal;
-        //String lowerCourtJudgments[];
-        personnelType personnelType;
-        //judgmentForm judgmentForm;
-        //public Division division;
-        //public Chamber chambers[];
-        //DissentingOpinions dissentingOpinions[];
         String judgmentDate;
 
-        /*
-        public static Judgment JudgmentFromString(String filepath)
-        {
-            JudgmentBuilderJSON builderObject = JudgmentBuilderJSON.parseFromString(filepath);
-            return new Judgment(builderObject);
-        }
-        */
         public Judgment(JudgmentBuilderJSON builderObject)
         {
             referencedRegulations=builderObject.referencedRegulations;
@@ -63,12 +48,9 @@
             summary=builderObject.summary;
             textContent=builderObject.textContent;
             legalBases=builderObject.legalBases;
-          //  keyword=builderObject.keyword;
             referencedCourtCases=builderObject.referencedCourtCases;
             receiptDate=builderObject.receiptDate;
             meansOfAppeal=builderObject.meansOfAppeal;
-            //judgmentForm=builderObject.judgmentForm;
-            //dissentingOpinions=builderObject.dissentingOpinions;
             judges=builderObject.judges;
             judgmentDate=builderObject.judgmentDate;
             courtCases=builderObject.courtCases;
@@ -85,12 +67,9 @@
             summary=builderObject.summary;
             textContent=builderObject.textContent;
             legalBases=builderObject.legalBases;
-            //  keyword=builderObject.keyword;
             referencedCourtCases=builderObject.referencedCourtCases;
             receiptDate=builderObject.receiptDate;
             meansOfAppeal=builderObject.meansOfAppeal;
-            //judgmentForm=builderObject.judgmentForm;
-            //dissentingOpinions=builderObject.dissentingOpinions;
             judges=builderObject.judges;
             judgmentDate=builderObject.judgmentDate;
             courtCases=builderObject.courtCases;
@@ -140,10 +119,6 @@
         public String toString()
         {
             return (courtCases[0].caseNumber+", "+judgmentDate+", "+CourtTypes.IntToString(courtType.enumToInt())+", "+ Judge.arrayToString(judges));
-        }
-        public String getCourtCase()
-        {
-            return (courtCases[0].caseNumber);
         }
     }
 

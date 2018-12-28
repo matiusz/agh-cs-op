@@ -1,33 +1,7 @@
 package Main.documentationDef;
 
-import java.util.Objects;
-
 public class ReferencedRegulations
 {
-    String getJournalTitle() {
-        return journalTitle;
-    }
-
-    int getJournalYear() {
-        return journalYear;
-    }
-
-
-    int getJournalNo() {
-        return journalNo;
-    }
-
-
-    int getJournalEntry() {
-        return journalEntry;
-    }
-
-
-    public String getText() {
-        return text;
-    }
-
-
     String journalTitle;
     int journalYear;
     int journalNo;

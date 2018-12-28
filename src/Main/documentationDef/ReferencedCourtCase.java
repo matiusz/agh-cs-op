@@ -2,20 +2,11 @@ package Main.documentationDef;
 
 public class ReferencedCourtCase
 {
-    public String getCaseNumber() {
-        return caseNumber;
-    }
-
     public int[] getJudgmentIds() {
         return judgmentIds;
     }
 
-    public boolean isGenerated() {
-        return generated;
-    }
-
-
-    String caseNumber;
+   String caseNumber;
 
     public void setJudgmentIds(int[] judgmentIds) {
         this.judgmentIds = judgmentIds;

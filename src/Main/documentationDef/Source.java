@@ -1,7 +1,5 @@
 package Main.documentationDef;
 
-import java.util.Date;
-
 import static Main.documentationDef.Source.code.*;
 
 public class Source
@@ -33,51 +31,21 @@ public class Source
     String judgmentUrl;
     String judgmentId;
     String publisher;
-
-    public Source.code getCode() {
-        return code;
-    }
-
     public void setCode(Source.code code) {
         this.code = code;
     }
-
-    public String getJudgmentUrl() {
-        return judgmentUrl;
-    }
-
     public void setJudgmentUrl(String judgmentUrl) {
         this.judgmentUrl = judgmentUrl;
     }
-
-    public String getJudgmentId() {
-        return judgmentId;
-    }
-
     public void setJudgmentId(String judgmentId) {
         this.judgmentId = judgmentId;
     }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
-
-    public String getReviser() {
-        return reviser;
-    }
-
     public void setReviser(String reviser) {
         this.reviser = reviser;
     }
-
-    public String getPublicationDate() {
-        return publicationDate;
-    }
-
     public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }

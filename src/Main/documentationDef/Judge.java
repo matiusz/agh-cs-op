@@ -64,10 +64,6 @@ public class Judge
         return name;
     }
 
-    public String getFunction() {
-        return function;
-    }
-
     public static SpecialRoles stringToEnum(String s)
     {
         switch (s)
