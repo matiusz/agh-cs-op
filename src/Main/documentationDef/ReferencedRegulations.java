@@ -1,22 +1,24 @@
 package Main.documentationDef;
 
+import java.util.Objects;
+
 public class ReferencedRegulations
 {
-    public String getJournalTitle() {
+    String getJournalTitle() {
         return journalTitle;
     }
 
-    public int getJournalYear() {
+    int getJournalYear() {
         return journalYear;
     }
 
 
-    public int getJournalNo() {
+    int getJournalNo() {
         return journalNo;
     }
 
 
-    public int getJournalEntry() {
+    int getJournalEntry() {
         return journalEntry;
     }
 
@@ -31,4 +33,35 @@ public class ReferencedRegulations
     int journalNo;
     int journalEntry;
     String text;
+
+    public ReferencedRegulations(String title, int year, int no, int entry, String text)
+    {
+        journalTitle=title;
+        journalYear=year;
+        journalNo=no;
+        journalEntry=entry;
+        this.text=text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReferencedRegulations that = (ReferencedRegulations) o;
+        return journalYear == that.journalYear &&
+                journalNo == that.journalNo &&
+                journalEntry == that.journalEntry;
+    }
+
+    @Override
+    public String toString() {
+        String s = "" + journalEntry + '\\' + journalNo + '\\' + journalYear;
+        return s;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return journalNo*10000+journalYear;
+    }
 }

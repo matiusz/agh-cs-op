@@ -17,17 +17,18 @@ public class JudgmentBuilderJSON
     public String summary;
     public String textContent;
     public String legalBases;
-    public keywords keyword;
+    //public keywords keyword;
     public ReferencedCourtCase referencedCourtCases[];
     public String receiptDate;
     public String meansOfAppeal;
     public String lowerCourtJudgments[];
     public personnelType personnelType;
-    public judgmentForm judgmentForm;
-    public Division division;
-    public Chamber chambers[];
-    public DissentingOpinions dissentingOpinions[];
+    //public Main.documentationDef.Unused.judgmentForm judgmentForm;
+    //public Division division;
+    //public Chamber chambers[];
+    //public DissentingOpinions dissentingOpinions[];
     public String judgmentDate;
+    public ReferencedRegulations referencedRegulations[];
 
 
     private void simpleFieldsParse(JSONObject json)
@@ -38,10 +39,10 @@ public class JudgmentBuilderJSON
         summary =json.optString("summary");
         textContent =json.optString("textContent");
         legalBases =json.optString("legalBases");
-        keyword = keywords.stringToEnum(json.optString("keyword"));
+        //keyword = keywords.stringToEnum(json.optString("keyword"));
         receiptDate = json.optString("receiptDate");
         meansOfAppeal = json.optString("meansOfAppeal");
-        judgmentForm = judgmentForm.stringToEnum(json.optString("judgmentForm"));
+        //judgmentForm = judgmentForm.stringToEnum(json.optString("judgmentForm"));
         personnelType = personnelType.stringToEnum(json.optString("personnelType"));
         courtType = CourtTypes.stringToEnum(json.optString("courtType"));
         judgmentDate = json.optString("judgmentDate");
@@ -85,7 +86,7 @@ public class JudgmentBuilderJSON
         this.courtCases = new CourtCase[courtCases.length()];
         for (int i = 0; i<courtCases.length(); i++)
         {
-            this.courtCases[i]=new CourtCase(courtCases.optString(i));
+            this.courtCases[i]=new CourtCase(courtCases.getJSONObject(i).optString("caseNumber"));
         }
     }
 
@@ -108,7 +109,7 @@ public class JudgmentBuilderJSON
             judges[i]=judge;
         }
     }
-
+/*
     private void parseDissentingOpinions(JSONObject json)
     {
         JSONArray diss = json.getJSONArray("dissentingOpinions");
@@ -124,7 +125,7 @@ public class JudgmentBuilderJSON
             dissentingOpinions[i] = parsedDiss;
         }
     }
-
+*/
     private void parseReferencedCourtCases(JSONObject json)
     {
         JSONArray refs = json.getJSONArray("referencedCourtCases");
@@ -140,6 +141,16 @@ public class JudgmentBuilderJSON
             this.referencedCourtCases[i] = parsedRef;
         }
     }
+    private void parseReferencedRegulations(JSONObject json)
+    {
+       JSONArray refs = json.getJSONArray("referencedRegulations");
+       this.referencedRegulations = new ReferencedRegulations[refs.length()];
+       for (int i = 0; i<refs.length(); i++)
+       {
+           JSONObject refobj = refs.getJSONObject(i);
+           this.referencedRegulations[i] = new ReferencedRegulations(refobj.optString("journalTitle"), refobj.getInt("journalYear"),refobj.getInt("journalNo"), refobj.getInt("journalEntry"), refobj.optString("text") );
+       }
+    }
 
     private void completeParse(JSONObject json)
     {
@@ -150,6 +161,7 @@ public class JudgmentBuilderJSON
         parseCourtCases(json);
         //parseDissentingOpinions(json);
         parseReferencedCourtCases(json);
+        parseReferencedRegulations(json);
         parseJudges(json);
     }
 /*
@@ -162,7 +174,7 @@ public class JudgmentBuilderJSON
         return parsed;
     }
 */
-    public static JudgmentBuilderJSON[] parseFromArray(String arg)
+    public static JudgmentBuilderJSON[] parseFromJSONArray(String arg)
     {
         FileMethods fileMethods = new FileMethods();
         JSONObject json = new JSONObject(fileMethods.readFile(arg));

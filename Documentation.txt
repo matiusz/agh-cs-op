@@ -1,0 +1,20 @@
+Program akceptuje 2 parametry: ścieżkę dostępu do folderu z plikami .html i .json do wczytania, oraz ścieżkę do pliku w którym ma zapisać wynik działania programu.
+
+W przypadku gdy folder z plikami jest pusty, program kończy działanie z błędem. Odczytywane są jedynie pliki .html oraz .json z folderu docelowego oraz podkatalogów.
+
+Jeśli plik wynikowy nie istnieje, zostanie on utworzony.
+
+Po załadowaniu wszystkich plików zostaje wyświetlona lista dostępnych komend:
+
+load <folder path>; [folder paths] - pozwala na załadowanie dodatkowych plików ze wskazanego katalogu.
+judge <judge name> - Wyświetla liczbę orzeczeń wydanych przez podanego sędziego
+judges - pokazuje 10 sędziów z największą liczbą wydanych orzeczeń, w przypadku mniejszej liczby sędziów kolejne pozycje mają wartość null
+rubrum <id>; [ids] - wyświetla metrykę dla podanego orzeczenia lub ciągu orzeczeń oddzielonego średnikami, w przypadku kilku argumentów każda metryka pojawia się w osobnej linii wynikowej
+content <id> - wyświetla treść orzeczenia
+regulations - wyświetla 10 najczęściej przywoływanych orzeczeń, w przypadku mniejszej liczby orzeczeń kolejne pozycje mają wartość null
+months - pokazuje rozkład statystyczny orzeczeń ze względu na miesiące
+courts - pokazuje rozkład statystyczny orzeczeń ze względu na typy sądów
+jury - pokazuje rozkład statystyczny orzeczeń ze względu na ilość sędziów
+log - pokazuje historię poleceń wpisanych w trakcie działania programu
+help (lub h) - pokazuje listę poleceń
+quit (lub q) - kończy działanie programu

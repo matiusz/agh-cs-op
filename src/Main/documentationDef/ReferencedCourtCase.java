@@ -1,7 +1,5 @@
 package Main.documentationDef;
 
-import static java.util.Arrays.deepToString;
-
 public class ReferencedCourtCase
 {
     public String getCaseNumber() {

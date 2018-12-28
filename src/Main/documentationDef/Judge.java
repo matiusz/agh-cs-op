@@ -73,8 +73,10 @@ public class Judge
         switch (s)
         {
             case "PRESIDING_JUDGE":
+            case "przewodniczący":
                 return PRESIDING_JUDGE;
             case "REPORTING_JUDGE":
+            case "sprawozdawca":
                 return REPORTING_JUDGE;
             case "REASONS_FOR_JUDGEMENT_AUTHOR":
                 return REASONS_FOR_JUDGEMENT_AUTHOR;

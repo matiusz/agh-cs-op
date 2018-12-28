@@ -2,7 +2,7 @@ package Main.functions;
 
 public class Levenshtein
 {
-    public static int levDistance(String a, String b) //Code taken from: https://pl.wikipedia.org/wiki/Odleg%C5%82o%C5%9B%C4%87_Levenshteina
+    public static int levDistance(String a, String b) //Algorithm from: https://pl.wikipedia.org/wiki/Odleg%C5%82o%C5%9B%C4%87_Levenshteina
     {
         int cost;
         int levArray[][] = new int[a.length()][b.length()];

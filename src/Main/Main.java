@@ -4,45 +4,76 @@ import Main.documentationDef.Judgment;
 import Main.functions.Commands;
 import Main.functions.FileMethods;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Scanner;
-import static Main.documentationDef.Judgment.judgmentArray;
 
-public class Main {
-    public static void main(String args[]) throws IOException
-    {
+public class Main
+{
+    public static void main(String args[]) throws IOException {
+
         Scanner sc = new Scanner(System.in);
         // path = sc.nextLine();
-        FileMethods fileMethods = new FileMethods();
         HashMap<Integer, Judgment> judgmentHashMap = new HashMap<>();
         HashMap<String, Judge> judgeHashMap = new HashMap<>();
+        Commands console = new Commands();
         //Preload
         String path = args[0];
         //
+        console.loadNewData(judgmentHashMap, path);
+        /*
         try
         {
             for (String string : fileMethods.fileWalk(path)) {
                 System.out.println(path + "\\" + string);
-                for (Judgment judgment : judgmentArray(path + "\\" + string)) {
+
+                for (Judgment judgment : judgmentJSONArray(path + "\\" + string))
+                {
                     judgmentHashMap.put(judgment.getId(), judgment);
                 }
+
             }
         }
+
         catch (NullPointerException ex)
         {
             System.out.println("Invalid starting directory, shutting down");
             System.exit(1);
         }
+        */
         System.out.println(judgmentHashMap.size() + " judgments(s) loaded successfully");
         System.out.print("\n");
         System.out.print(Commands.helptext);
-        Commands console = new Commands();
+        PrintWriter out;
+        try
+        {
+            out = new PrintWriter(args[1]);
+        }
+        catch (FileNotFoundException ex)
+        {
+            File outputFile = new File(args[1]);
+            outputFile.createNewFile();
+            out = new PrintWriter(args[1]);
+        }
+
         while (true)
         {
-            System.out.print("\n>");
+            System.out.print(">");
             String input = sc.nextLine();
-            System.out.print(console.command(input, judgmentHashMap,judgeHashMap));
+            out.print(input+"\r\n");
+            String results = console.command(input, judgmentHashMap,judgeHashMap);
+            if (results.equals("qqq"))
+            {
+                System.out.println("Thank you for using this program");
+                out.flush();
+                out.close();
+                System.exit(0);
+            }
+            out.print(results+"\r\n");
+            System.out.print(results);
         }
     }
 }

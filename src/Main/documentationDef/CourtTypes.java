@@ -5,7 +5,8 @@ public enum CourtTypes {
     SUPREME,
     NATIONAL_APPEAL_CHAMBER,
     CONSTITUTIONAL_TRIBUNAL,
-    ADMINISTRATIVE;
+    ADMINISTRATIVE,
+    INVALID;
 
     public static CourtTypes stringToEnum(String s) {
         switch (s) {
@@ -20,7 +21,7 @@ public enum CourtTypes {
             case "ADMINISTRATIVE":
                 return ADMINISTRATIVE;
             default:
-                return COMMON;
+                return INVALID;
         }
     }
 

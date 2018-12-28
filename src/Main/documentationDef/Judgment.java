@@ -1,19 +1,24 @@
     package Main.documentationDef;
 
+    import Main.functions.JudgmentBuilderHTML;
     import Main.functions.JudgmentBuilderJSON;
+    import org.jsoup.nodes.Document;
+
+    import java.util.HashMap;
 
     public class Judgment
     {
         int id;
 
+
         public int getId()
         {
-            return id;
+            return courtCases[0].hashCode();
         }
 
         Judge judges[];
         CourtTypes courtType;
-        public CourtCase courtCases[];
+        CourtCase courtCases[];
         judgmentType judgmentType;
         Source source;
         String courtReporters[];
@@ -21,16 +26,22 @@
         String summary;
         String textContent;
         String legalBases;
-        keywords keyword;
+
+        public ReferencedRegulations[] getReferencedRegulations() {
+            return referencedRegulations;
+        }
+
+        ReferencedRegulations referencedRegulations[];
+        //keywords keyword;
         ReferencedCourtCase referencedCourtCases[];
         String receiptDate;
         String meansOfAppeal;
-        String lowerCourtJudgments[];
+        //String lowerCourtJudgments[];
         personnelType personnelType;
-        judgmentForm judgmentForm;
+        //judgmentForm judgmentForm;
         //public Division division;
         //public Chamber chambers[];
-        DissentingOpinions dissentingOpinions[];
+        //DissentingOpinions dissentingOpinions[];
         String judgmentDate;
 
         /*
@@ -42,6 +53,7 @@
         */
         public Judgment(JudgmentBuilderJSON builderObject)
         {
+            referencedRegulations=builderObject.referencedRegulations;
             id=builderObject.id;
             courtType=builderObject.courtType;
             judgmentType=builderObject.judgmentType;
@@ -51,26 +63,60 @@
             summary=builderObject.summary;
             textContent=builderObject.textContent;
             legalBases=builderObject.legalBases;
-            keyword=builderObject.keyword;
+          //  keyword=builderObject.keyword;
             referencedCourtCases=builderObject.referencedCourtCases;
             receiptDate=builderObject.receiptDate;
             meansOfAppeal=builderObject.meansOfAppeal;
-            judgmentForm=builderObject.judgmentForm;
-            dissentingOpinions=builderObject.dissentingOpinions;
+            //judgmentForm=builderObject.judgmentForm;
+            //dissentingOpinions=builderObject.dissentingOpinions;
+            judges=builderObject.judges;
+            judgmentDate=builderObject.judgmentDate;
+            courtCases=builderObject.courtCases;
+        }
+        public Judgment(JudgmentBuilderHTML builderObject)
+        {
+            referencedRegulations=builderObject.referencedRegulations;
+            id=builderObject.id;
+            courtType=builderObject.courtType;
+            judgmentType=builderObject.judgmentType;
+            source=builderObject.source;
+            courtReporters=builderObject.courtReporters;
+            decision=builderObject.decision;
+            summary=builderObject.summary;
+            textContent=builderObject.textContent;
+            legalBases=builderObject.legalBases;
+            //  keyword=builderObject.keyword;
+            referencedCourtCases=builderObject.referencedCourtCases;
+            receiptDate=builderObject.receiptDate;
+            meansOfAppeal=builderObject.meansOfAppeal;
+            //judgmentForm=builderObject.judgmentForm;
+            //dissentingOpinions=builderObject.dissentingOpinions;
             judges=builderObject.judges;
             judgmentDate=builderObject.judgmentDate;
             courtCases=builderObject.courtCases;
         }
 
-        public static Judgment[] judgmentArray(String filepath)
+        public static Judgment[] judgmentJSONArray(String filepath)
         {
-            JudgmentBuilderJSON builderObjects[] = JudgmentBuilderJSON.parseFromArray(filepath);
+            JudgmentBuilderJSON builderObjects[] = JudgmentBuilderJSON.parseFromJSONArray(filepath);
             Judgment judgments[] = new Judgment[builderObjects.length];
             for (int i=0; i<builderObjects.length; i++)
             {
                 judgments[i]= new Judgment(builderObjects[i]);
             }
             return judgments;
+        }
+
+        public static Judgment findBySignature(HashMap<Integer, Judgment> judgmentHashMap, String s) throws IllegalArgumentException
+        {
+            for(Judgment judgment : judgmentHashMap.values())
+            {
+                if (judgment.courtCases[0].caseNumber.equals(s))
+                {
+                    return judgment;
+                }
+            }
+            throw new IllegalArgumentException("Judgement not found");
         }
 
         public CourtTypes getCourtType()
@@ -94,6 +140,10 @@
         public String toString()
         {
             return (courtCases[0].caseNumber+", "+judgmentDate+", "+CourtTypes.IntToString(courtType.enumToInt())+", "+ Judge.arrayToString(judges));
+        }
+        public String getCourtCase()
+        {
+            return (courtCases[0].caseNumber);
         }
     }
 

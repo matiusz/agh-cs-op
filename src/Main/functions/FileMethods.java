@@ -1,6 +1,4 @@
 package Main.functions;
-import Main.Main;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -11,7 +9,6 @@ public class FileMethods
 {
     public String readFile(String pathname)
     {
-
         File file = new File(pathname);
         StringBuilder fileContents = new StringBuilder(100000);
 
@@ -37,10 +34,20 @@ public class FileMethods
         {
             throw new NullPointerException("Folder invalid");
         }
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                files.add(file.getName());
-            }
+        for (File file : listOfFiles)
+        {
+          if(file.isFile())  {files.add(file.getName());}
+          if(file.isDirectory())
+          {
+             ArrayList<String> subfiles = fileWalk(file.getAbsolutePath());
+            ArrayList<String> subfilesWithPath= new ArrayList<>();
+              for (String filename : subfiles)
+              {
+                  subfilesWithPath.add(file.getName()+"\\"+filename);
+              }
+             files.addAll(subfilesWithPath);
+          }
+
         }
         return files;
     }

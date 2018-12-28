@@ -1,32 +1,34 @@
 package Main.functions;
 
-import Main.documentationDef.CourtTypes;
-import Main.documentationDef.Judge;
-import Main.documentationDef.Judgment;
+import Main.documentationDef.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
-import java.util.Arrays;
+import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Scanner;
 
-import static Main.documentationDef.Judgment.judgmentArray;
+import static Main.documentationDef.Judgment.findBySignature;
+import static Main.documentationDef.Judgment.judgmentJSONArray;
 
 public class Commands
 {
     String log = "";
+    StringBuilder fullLog = new StringBuilder("");
     final static public String helptext =
             "List of commands:" +
-                    "\nload <folder path> [folder paths] - loads new judgments from a given folder(s)" +
+                    "\r\nload <folder path>; [folder paths] - loads new judgments from a given folder(s)" +
                    // "\njudgmentById (byID) - shows judgment with given id" +
-                    "\njudge <judge name> - shows how many judgments given judge has" +
-                    "\njudges - shows 10 judges with most judgments" +
-                    "\nrubrum <id> [ids] - shows a rubrum of a judgment with given id(s)" +
-                    "\ncontent <id> [ids]- shows text content of a judgement with given id(s)" +
-                    "\nmonths - shows how many judgments have been given each month"+
-                    "\ncourts - shows how many judgments each court type has" +
-                    "\njury - shows how many judgments each amount of judges has" +
-                    "\nlog - show history of entered commands" +
-                    "\nhelp (h) - show the list of available commands" +
-                    "\nquit (q) - ends the program\n";
+                    "\r\njudge <judge name> - shows how many judgments given judge has" +
+                    "\r\njudges - shows 10 judges with most judgments" +
+                    "\r\nrubrum <id>; [ids] - shows a rubrum of a judgment with given Case Number" +
+                    "\r\ncontent <id>- shows text content of a judgement with given id(s)" +
+                    "\r\nregulations - shows regulations that are referenced most often" +
+                    "\r\nmonths - shows how many judgments have been given each month"+
+                    "\r\ncourts - shows how many judgments each court type has" +
+                    "\r\njury - shows how many judgments each amount of judges has" +
+                    "\r\nlog - show history of entered commands" +
+                    "\r\nhelp (h) - show the list of available commands" +
+                    "\r\nquit (q) - ends the program\r\n";
     String commandlist[] = new String[13];
     {
         commandlist[0]="load";
@@ -43,51 +45,58 @@ public class Commands
         commandlist[11]="h";
         commandlist[12]="q";
     }
-    public String loadNewData(HashMap<Integer, Judgment> judgmentHashMap, String[] args) //load
+    public String loadNewData(HashMap<Integer, Judgment> judgmentHashMap, String args) //load
     {
         String output = "";
         FileMethods fileMethods = new FileMethods();
+        String argSplit[] = args.split("; ", -1);
         int count = 0;
-        for (String arg : args) {
-            try
-            {
+        for (String arg : argSplit) {
+  //          try {
                 for (String string : fileMethods.fileWalk(arg)) {
-                    System.out.println(arg + "\\" + string);
-                    for (Judgment judgment : judgmentArray(arg + "\\" + string)) {
+                    if (string.contains(".json"))
+                    {
+                        for (Judgment judgment : judgmentJSONArray(arg + "\\" + string))
+                        {
+                            judgmentHashMap.put(judgment.getId(), judgment);
+                            count++;
+                        }
+                    }
+                    if (string.contains(".html"))
+                    {
+                        //System.out.println(arg + "\\" + string);
+                        Document doc = Jsoup.parse(fileMethods.readFile(arg+"\\"+string), "UTF-8");
+                        JudgmentBuilderHTML builderObject = new JudgmentBuilderHTML(doc);
+                        Judgment judgment = new Judgment(builderObject);
                         judgmentHashMap.put(judgment.getId(), judgment);
                         count++;
                     }
                 }
-            }
+/*            }
             catch (NullPointerException ex)
             {
-                output+="Invalid directory, no files loaded\n";
+                output += "Invalid directory, no files loaded\n";
                 return output;
             }
+*/
         }
-        output+=(count+" judgments(s) loaded successfully" + '\n');
+        if (count==0) {output+="No matching files found";}
+        else {output+=(count + " judgments(s) loaded successfully" + "\r\n");}
         return output;
     }
-    public String judge(HashMap<Integer, Judgment> judgmentHashMap, String[] args) //judge [Name]
+    public String judge(HashMap<Integer, Judgment> judgmentHashMap, String args) //judge [Name]
     {
         String output = "";
         int count = 0;
-        String name = "";
-        if (args.length==0) return "Command \"judge\" requires an argument\n";
-        for (String arg:args)
-        {
-            if (name!="") {name+=" ";}
-            name+=arg;
-        }
         for (Judgment judgment : judgmentHashMap.values())
         {
             for (int i=0;i<judgment.getJudges().length; i++)
             {
-                if(name.equals(judgment.getJudges()[i].getName())) {count++;}
+                if(args.equals(judgment.getJudges()[i].getName())) {count++;}
             }
         }
-        if (count==0) return "This person has no judgments\n";
-        output+=("Amount of judgments: " + count + '\n');
+        if (count==0) return "This person has no judgments\r\n";
+        output+=("Amount of judgments: " + count + "\r\n");
         return output;
 
     }
@@ -99,6 +108,7 @@ public class Commands
         {
             for (Judge judge : judgment.getJudges())
             {
+
                 if(judgeHashMap.containsKey(judge.getName()))
                 {
                     judgeHashMap.get(judge.getName()).setAmount(judgeHashMap.get(judge.getName()).getAmount()+1);
@@ -132,57 +142,41 @@ public class Commands
         }
         for (Judge judge : most)
         {
-            output+=(judge.getName()+" - "+judge.getAmount()+" judgment(s)\n");
+            output+=(judge.getName()+" - "+judge.getAmount()+" judgment(s)\r\n");
         }
         return output;
     }
-    public String rubrum(HashMap<Integer, Judgment> judgmentHashMap, String[] args) //
+    public String rubrum(HashMap<Integer, Judgment> judgmentHashMap, String args) //
     {
         String output = "";
-        int targetId;
-        Judgment[] judgmentArray = new Judgment[args.length];
-        for (int i = 0; i<args.length;i++)
+        if (args.equals("")) {return "Function \"rubrum\" requires at least one argument\r\n";}
+        String arguments[]=args.split("; ", -1);
+        Judgment result;
+        for (String arg:arguments)
         {
-            try
+            try {
+                result = findBySignature(judgmentHashMap, arg);
+                output += result + "\n";
+            } catch (IllegalArgumentException ex)
             {
-                targetId = Integer.parseInt(args[i]);
+                output += "Judgment " + arg + " not found" + "\r\n";
             }
-            catch (NumberFormatException ex)
-            {
-                return "Parameters have to be numbers\n";
-            }
-            judgmentArray[i]=(judgmentHashMap.get(targetId));
-        }
-        for (Judgment judgment:judgmentArray)
-        {
-            output+=judgment+"\n";
         }
         return output;
     }
-    public String showJudgementContent(HashMap<Integer, Judgment> judgmentHashMap, String[] args) //content
+    public String showJudgementContent(HashMap<Integer, Judgment> judgmentHashMap, String args) //content
     {
         String output = "";
-        int targetId;
-        Judgment[] judgmentArray = new Judgment[args.length];
-        for (int i = 0; i<args.length;i++)
+        Judgment result;
+        try
         {
-            try
-            {
-                targetId = Integer.parseInt(args[i]);
-            }
-            catch (NumberFormatException ex)
-            {
-                return "Parameters have to be numbers";
-            }
-            judgmentArray[i]=(judgmentHashMap.get(targetId));
+            result=findBySignature(judgmentHashMap, args);
         }
-        for (Judgment judgment:judgmentArray)
+        catch (IllegalArgumentException ex)
         {
-            if (judgment==null)
-                output+="null\n";
-            else
-            output+=(judgment.showContent() + '\n');
+            return "Judgment not found"+"\r\n";
         }
+        output+=result.showContent()+"\r\n";
         return output;
     }
     public String jury(HashMap<Integer, Judgment> judgmentHashMap) //jury
@@ -199,7 +193,7 @@ public class Commands
         }
         for (int i = 0; i < 20; i++) {
             if(judgesAmount[i]!=0)
-            {output+=(i + " judge(s) - " + judgesAmount[i] + " judgment(s) - " + (float)(judgesAmount[i])*100/count + "% total\n");}
+            {output+=(i + " judge(s) - " + judgesAmount[i] + " judgment(s) - " + (float)(judgesAmount[i])*100/count + "% total\r\n");}
         }
         return output;
     }
@@ -234,7 +228,7 @@ public class Commands
                 case 10: output+=("November - "); break;
                 case 11: output+=("December - "); break;
                 }
-                output+=(month[i] + " judgment(s) - " + (float)(month[i])*100/count + "% total\n");
+                output+=(month[i] + " judgment(s) - " + (float)(month[i])*100/count + "% total\r\n");
             }
         }
         return output;
@@ -253,17 +247,71 @@ public class Commands
             count++;
         }
         for (int i = 0; i < 5; i++) {
-            output+=(CourtTypes.IntToString(i+1) + " - " + courts[i] + " judgment(s) - " + (float) (courts[i]) * 100 / count + "% total\n");
+            output+=(CourtTypes.IntToString(i+1) + " - " + courts[i] + " judgment(s) - " + (float) (courts[i]) * 100 / count + "% total\r\n");
         }
         return output;
     }
+    public String regulations(HashMap<Integer, Judgment> judgmentHashMap)
+     {
+            String output = "";
+            HashMap<ReferencedRegulations, Integer> referencedRegulationsHashMap = new HashMap<>();
+            for (Judgment judgment : judgmentHashMap.values())
+            {
+                for(ReferencedRegulations refReg : judgment.getReferencedRegulations())
+                {
+                    if (referencedRegulationsHashMap.containsKey(refReg))
+                    {
+                        referencedRegulationsHashMap.put(refReg,referencedRegulationsHashMap.get(refReg)+1);
+                    }
+                    else
+                    {
+                        referencedRegulationsHashMap.put(refReg, 0);
+                    }
+                }
+            }
+            ReferencedRegulations refRegs[] = new ReferencedRegulations[10];
+            int count[] = new int[10];
+            for (int i=0;i<10;i++)
+            {
+                count[i]=0;
+            }
+            for (ReferencedRegulations refReg : referencedRegulationsHashMap.keySet())
+            {
+                for (int i =0; i<10; i++)
+                {
+                    if(referencedRegulationsHashMap.get(refReg)>count[i])
+                    {
+                        for(int j=9;j>i;j--)
+                        {
+                            count[j]=count[j-1];
+                            refRegs[j]=refRegs[j-1];
+                        }
+                        refRegs[i]=refReg;
+                        count[i]=referencedRegulationsHashMap.get(refReg);
+                        break;
+                    }
+                }
+            }
+            for(int i =0;i<10;i++)
+            {
+                output+=refRegs[i]+"\r\n";
+            }
+            return output;
+        }
     public String command(String s, HashMap<Integer, Judgment> judgmentHashMap, HashMap<String, Judge> judgeHashMap)
     {
-        log+=s+'\n';
-        String input[] = s.split(" ", -1);
+        log+=s+"\r\n";
+        String input[] = s.split(" ", 2);
+        String args = "";
         String command = input[0];
-        String args[] = Arrays.copyOfRange(input, 1, input.length);
-        switch (command) {
+        command=command.toLowerCase();
+        if (input.length!=1)
+        {
+            args=input[1];
+        }
+       switch (command) {
+            case "":
+                return "";
             case "loadNewData":
             case "load":
                 return loadNewData(judgmentHashMap, args);
@@ -283,16 +331,17 @@ public class Commands
                 return showJudgementContent(judgmentHashMap, args);
             case "log":
                 return log;
+           case "regulations":
+               return regulations(judgmentHashMap);
             case "help":
             case "h":
                 return helptext;
             case "quit":
             case "q":
-                System.out.println("Thank you for using this program");
-                System.exit(0);
+                return "qqq";
             default:
                 {
-                    return ("Invalid command, please try again\nSuggested commands: " + Levenshtein.suggest(command, commandlist) + '\n');
+                    return ("Invalid command, please try again\r\nSuggested commands: " + Levenshtein.suggest(command, commandlist) + "\r\n");
                 }
         }
     }
